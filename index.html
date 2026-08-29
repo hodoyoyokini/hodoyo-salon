@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>HODOYO Salon｜次回予約をスマホにも</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family:
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      background: #faf8f3;
+      color: #253247;
+    }
+
+    .wrap {
+      max-width: 460px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    .brand {
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .store {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 28px;
+    }
+
+    .description {
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      border: 1px solid #d7dbe0;
+      border-radius: 10px;
+      background: white;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 28px;
+      padding: 16px;
+      font-size: 17px;
+      font-weight: bold;
+      border: 0;
+      border-radius: 10px;
+      background: #253247;
+      color: white;
+      cursor: pointer;
+    }
+
+    .note {
+      margin-top: 22px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #667085;
+    }
+
+    .error {
+      margin-top: 14px;
+      color: #b42318;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrap">
+
+    <div class="brand">
+      HODOYO Salon
+    </div>
+
+    <h1>
+      次回予約をスマホにも。
+    </h1>
+
+    <div
+      id="storeName"
+      class="store"
+    >
+      HODOYOテスト美容室
+    </div>
+
+    <div class="description">
+      予約カードの日時を入力すると、
+      カレンダーに保存できます。
+    </div>
+
+    <label for="date">
+      次回予約日
+    </label>
+
+    <input
+      id="date"
+      type="date"
+    >
+
+    <label for="time">
+      予約時刻
+    </label>
+
+    <input
+      id="time"
+      type="time"
+    >
+
+    <div
+      id="error"
+      class="error"
+    >
+      予約日と時刻を入力してください。
+    </div>
+
+    <button
+      type="button"
+      onclick="addToCalendar()"
+    >
+      カレンダーに追加
+    </button>
+
+    <div class="note">
+      ※この画面では氏名・電話番号・
+      メールアドレスなどの個人情報は
+      入力・保存しません。<br>
+      ※予約変更・キャンセルは
+      店舗へ直接ご連絡ください。
+    </div>
+
+  </div>
+
+  <script>
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const storeName =
+      params.get('store') ||
+      'HODOYOテスト美容室';
+
+    document
+      .getElementById('storeName')
+      .textContent =
+        storeName;
+
+    setMinimumDate();
+
+    function setMinimumDate() {
+
+      const now =
+        new Date();
+
+      const year =
+        now.getFullYear();
+
+      const month =
+        String(
+          now.getMonth() + 1
+        ).padStart(2, '0');
+
+      const day =
+        String(
+          now.getDate()
+        ).padStart(2, '0');
+
+      document
+        .getElementById('date')
+        .min =
+          year +
+          '-' +
+          month +
+          '-' +
+          day;
+    }
+
+    function addToCalendar() {
+
+      const date =
+        document
+          .getElementById('date')
+          .value;
+
+      const time =
+        document
+          .getElementById('time')
+          .value;
+
+      const error =
+        document
+          .getElementById('error');
+
+      if (!date || !time) {
+
+        error.style.display =
+          'block';
+
+        return;
+      }
+
+      error.style.display =
+        'none';
+
+      const start =
+        makeCalendarDateTime(
+          date,
+          time
+        );
+
+      const end =
+        addMinutes(
+          date,
+          time,
+          60
+        );
+
+      const title =
+        storeName +
+        '｜次回予約';
+
+      const details =
+        'HODOYO Salonで保存した次回予約です。' +
+        '\n' +
+        '※終了時刻は仮に60分後で登録されます。' +
+        '\n' +
+        '予約変更・キャンセルは店舗へ直接ご連絡ください。';
+
+      const calendarParams =
+        new URLSearchParams({
+          action: 'TEMPLATE',
+          text: title,
+          dates:
+            start +
+            '/' +
+            end,
+          details: details,
+          ctz: 'Asia/Tokyo'
+        });
+
+      const url =
+        'https://calendar.google.com/calendar/render?' +
+        calendarParams.toString();
+
+      window.location.href =
+        url;
+    }
+
+    function makeCalendarDateTime(
+      date,
+      time
+    ) {
+
+      return (
+        date.replaceAll('-', '') +
+        'T' +
+        time.replace(':', '') +
+        '00'
+      );
+    }
+
+    function addMinutes(
+      date,
+      time,
+      minutesToAdd
+    ) {
+
+      const dateParts =
+        date
+          .split('-')
+          .map(Number);
+
+      const timeParts =
+        time
+          .split(':')
+          .map(Number);
+
+      const value =
+        new Date(
+          Date.UTC(
+            dateParts[0],
+            dateParts[1] - 1,
+            dateParts[2],
+            timeParts[0],
+            timeParts[1]
+          )
+        );
+
+      value.setUTCMinutes(
+        value.getUTCMinutes() +
+        minutesToAdd
+      );
+
+      const year =
+        value.getUTCFullYear();
+
+      const month =
+        String(
+          value.getUTCMonth() + 1
+        ).padStart(2, '0');
+
+      const day =
+        String(
+          value.getUTCDate()
+        ).padStart(2, '0');
+
+      const hour =
+        String(
+          value.getUTCHours()
+        ).padStart(2, '0');
+
+      const minute =
+        String(
+          value.getUTCMinutes()
+        ).padStart(2, '0');
+
+      return (
+        year +
+        month +
+        day +
+        'T' +
+        hour +
+        minute +
+        '00'
+      );
+    }
+
+  </script>
+
+</body>
+</html>
