@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>HODOYO Salon｜店頭QRカード</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family:
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      background: #eee;
+      color: #253247;
+    }
+
+    .card {
+      width: 105mm;
+      min-height: 148mm;
+      margin: 0 auto;
+      padding: 14mm 10mm;
+      background: #faf8f3;
+      text-align: center;
+      border-radius: 14px;
+    }
+
+    .brand {
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 25px;
+      line-height: 1.5;
+      margin: 0 0 10px;
+    }
+
+    .store {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .description {
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .qr-wrap {
+      width: 64mm;
+      height: 64mm;
+      margin: 0 auto 18px;
+      padding: 5mm;
+      background: white;
+      border-radius: 12px;
+    }
+
+    #qr {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .steps {
+      text-align: left;
+      max-width: 280px;
+      margin: 0 auto;
+      font-size: 14px;
+      line-height: 2;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 13px;
+      border-radius: 12px;
+      background: #f2e8df;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .tagline {
+      margin-top: 18px;
+      font-size: 11px;
+      color: #667085;
+    }
+
+    .controls {
+      max-width: 105mm;
+      margin: 18px auto 0;
+      text-align: center;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #253247;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+      }
+
+      .card {
+        width: 105mm;
+        min-height: 148mm;
+        border-radius: 0;
+      }
+
+      .controls {
+        display: none;
+      }
+
+      @page {
+        size: A6 portrait;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <div class="brand">
+      HODOYO Salon
+    </div>
+
+    <h1>
+      次回予約を<br>
+      スマホにも。
+    </h1>
+
+    <div
+      id="storeName"
+      class="store"
+    >
+      店舗名
+    </div>
+
+    <div class="description">
+      次回予約の日付と時刻を入力して、<br>
+      スマホのカレンダーにも保存できます。
+    </div>
+
+    <div class="qr-wrap">
+      <img
+        id="qr"
+        alt="HODOYO Salon QRコード"
+      >
+    </div>
+
+    <div class="steps">
+      ① QRを読み取る<br>
+      ② 次回予約日・時刻を入力<br>
+      ③「カレンダーに追加」
+    </div>
+
+    <div class="message">
+      予約カードは、そのままで。<br>
+      <strong>「忘れない」だけ、デジタルに。</strong>
+    </div>
+
+    <div class="tagline">
+      HODOYO｜仕事を、ほどよく軽く。
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button onclick="window.print()">
+      このカードを印刷
+    </button>
+  </div>
+
+  <script>
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const storeName =
+      params.get('store') ||
+      'HODOYOテスト美容室';
+
+    document
+      .getElementById('storeName')
+      .textContent =
+        storeName;
+
+    // 現在のGitHub Pagesと同じ場所にある
+    // index.html（予約入力画面）の店舗専用URLを作成
+    const basePath =
+      window.location.pathname
+        .replace(
+          /counter\.html$/,
+          ''
+        );
+
+    const bookingUrl =
+      window.location.origin +
+      basePath +
+      '?store=' +
+      encodeURIComponent(
+        storeName
+      );
+
+    // 店舗専用ページをQRコード化
+    const qrUrl =
+      'https://api.qrserver.com/v1/create-qr-code/' +
+      '?size=800x800' +
+      '&format=png' +
+      '&margin=20' +
+      '&data=' +
+      encodeURIComponent(
+        bookingUrl
+      );
+
+    document
+      .getElementById('qr')
+      .src =
+        qrUrl;
+  </script>
+
+</body>
+</html>
