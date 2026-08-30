@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HODOYO Salon</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 16px 40px;
+      font-family:
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      background: #faf8f3;
+      color: #253247;
+    }
+
+    .wrap {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      line-height: 1.35;
+    }
+
+    .lead {
+      margin: 0 0 28px;
+      color: #667085;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .box {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 18px;
+      border: 1px solid #cfd4dc;
+      border-radius: 10px;
+      background: white;
+      color: #253247;
+      font-size: 17px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px 12px;
+      margin-top: 10px;
+      border: 0;
+      border-radius: 11px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .google {
+      background: #253247;
+      color: white;
+    }
+
+    .ics {
+      background: #e9edf2;
+      color: #253247;
+    }
+
+    .copy {
+      background: #f4e1dc;
+      color: #253247;
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #667085;
+      line-height: 1.7;
+    }
+
+    .change {
+      padding: 14px;
+      background: #f6f6f4;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #4e5969;
+    }
+
+    .privacy {
+      font-size: 12px;
+      line-height: 1.8;
+      color: #667085;
+    }
+
+    .message {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 9px;
+      background: #eef4ef;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 12px;
+      color: #8a8f98;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <div class="brand">HODOYO Salon</div>
+
+  <h1 id="storeName">店舗名</h1>
+
+  <p class="lead">
+    紙の予約は、そのままで。<br>
+    次回予約を、スマホにも。
+  </p>
+
+  <div class="box">
+
+    <label for="date">次回予約日</label>
+    <input
+      type="date"
+      id="date"
+    >
+
+    <label for="time">予約時刻</label>
+    <input
+      type="time"
+      id="time"
+    >
+
+    <button
+      class="google"
+      onclick="addGoogleCalendar()"
+    >
+      Googleカレンダーに追加
+    </button>
+
+    <button
+      class="ics"
+      onclick="downloadIcs()"
+    >
+      カレンダーファイルを開く（.ics）
+    </button>
+
+    <button
+      class="copy"
+      onclick="copySchedule()"
+    >
+      予定内容をコピー
+    </button>
+
+    <div id="message" class="message"></div>
+
+    <div class="note">
+      ※ カレンダー上の予定時間は、現在1時間で仮登録します。<br>
+      必要に応じて、登録後に終了時刻を変更してください。
+    </div>
+
+  </div>
+
+  <div class="box">
+
+    <div class="change">
+      <strong>予約日時を変更した場合</strong><br><br>
+
+      店舗への変更連絡後、このQRコードをもう一度読み取り、
+      新しい日時を登録してください。<br><br>
+
+      変更前の予定がカレンダーに残っている場合は、
+      ご自身で削除してください。
+    </div>
+
+  </div>
+
+  <div class="box">
+
+    <div class="privacy">
+      <strong>入力した予約情報について</strong><br><br>
+
+      このページに入力した予約日・予約時刻は、
+      HODOYOのデータベースには保存しません。<br><br>
+
+      「Googleカレンダーに追加」を選んだ場合は、
+      予定登録のためGoogleへ予定情報が渡ります。<br><br>
+
+      「カレンダーファイル」や「予定内容をコピー」を選んだ場合は、
+      お使いの端末側で処理します。
+    </div>
+
+  </div>
+
+  <div class="footer">
+    HODOYO<br>
+    仕事を、ほどよく軽く。<br>
+    あとは、よきに。
+  </div>
+
+</div>
+
+
+<script>
+
+  // -----------------------------
+  // 店舗名
+  // -----------------------------
+
+  function getStoreName() {
+
+    const hash =
+      window.location.hash.replace(/^#/, '');
+
+    const params =
+      new URLSearchParams(hash);
+
+    return (
+      params.get('store') ||
+      'HODOYOテスト美容室'
+    );
+
+  }
+
+  const storeName = getStoreName();
+
+  document.getElementById(
+    'storeName'
+  ).textContent = storeName;
+
+
+  // -----------------------------
+  // 入力確認
+  // -----------------------------
+
+  function getSchedule() {
+
+    const date =
+      document.getElementById('date').value;
+
+    const time =
+      document.getElementById('time').value;
+
+    if (!date || !time) {
+
+      showMessage(
+        '予約日と予約時刻を入力してください。'
+      );
+
+      return null;
+    }
+
+    return {
+      date,
+      time
+    };
+
+  }
+
+
+  // -----------------------------
+  // Google Calendar
+  // -----------------------------
+
+  function addGoogleCalendar() {
+
+    const schedule = getSchedule();
+
+    if (!schedule) return;
+
+    const start =
+      toCalendarText(
+        schedule.date,
+        schedule.time
+      );
+
+    const end =
+      addMinutes(
+        schedule.date,
+        schedule.time,
+        60
+      );
+
+    const url =
+      'https://calendar.google.com/calendar/render' +
+      '?action=TEMPLATE' +
+      '&text=' +
+      encodeURIComponent(storeName) +
+      '&dates=' +
+      encodeURIComponent(
+        start + '/' + end
+      ) +
+      '&details=' +
+      encodeURIComponent(
+        '次回予約\n\n予約変更・キャンセルは店舗へ直接ご連絡ください。'
+      ) +
+      '&ctz=Asia%2FTokyo';
+
+    window.open(
+      url,
+      '_blank',
+      'noopener'
+    );
+
+  }
+
+
+  // -----------------------------
+  // ICS
+  // -----------------------------
+
+  function downloadIcs() {
+
+    const schedule = getSchedule();
+
+    if (!schedule) return;
+
+    const start =
+      toCalendarText(
+        schedule.date,
+        schedule.time
+      );
+
+    const end =
+      addMinutes(
+        schedule.date,
+        schedule.time,
+        60
+      );
+
+    const now =
+      new Date()
+        .toISOString()
+        .replace(/[-:]/g, '')
+        .replace(/\.\d{3}Z$/, 'Z');
+
+    const uid =
+      'hodoyo-' +
+      Date.now() +
+      '@hodoyo.local';
+
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//HODOYO//Salon//JA',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+
+      'BEGIN:VTIMEZONE',
+      'TZID:Asia/Tokyo',
+      'BEGIN:STANDARD',
+      'TZOFFSETFROM:+0900',
+      'TZOFFSETTO:+0900',
+      'TZNAME:JST',
+      'DTSTART:19700101T000000',
+      'END:STANDARD',
+      'END:VTIMEZONE',
+
+      'BEGIN:VEVENT',
+      'UID:' + uid,
+      'DTSTAMP:' + now,
+      'DTSTART;TZID=Asia/Tokyo:' + start,
+      'DTEND;TZID=Asia/Tokyo:' + end,
+      'SUMMARY:' + escapeIcs(storeName),
+      'DESCRIPTION:' +
+        escapeIcs(
+          '次回予約\\n予約変更・キャンセルは店舗へ直接ご連絡ください。'
+        ),
+      'END:VEVENT',
+
+      'END:VCALENDAR'
+
+    ].join('\r\n');
+
+    const blob =
+      new Blob(
+        [ics],
+        {
+          type:
+            'text/calendar;charset=utf-8'
+        }
+      );
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const a =
+      document.createElement('a');
+
+    a.href = url;
+
+    a.download =
+      'HODOYO予約.ics';
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    setTimeout(
+      () =>
+        URL.revokeObjectURL(url),
+      1000
+    );
+
+  }
+
+
+  // -----------------------------
+  // コピー
+  // -----------------------------
+
+  async function copySchedule() {
+
+    const schedule = getSchedule();
+
+    if (!schedule) return;
+
+    const text =
+      storeName +
+      '\n予約日：' +
+      formatJapaneseDate(
+        schedule.date
+      ) +
+      '\n予約時刻：' +
+      schedule.time;
+
+    try {
+
+      await navigator.clipboard.writeText(
+        text
+      );
+
+      showMessage(
+        '予定内容をコピーしました。普段お使いのカレンダーアプリへ貼り付けてください。'
+      );
+
+    } catch (error) {
+
+      const textarea =
+        document.createElement(
+          'textarea'
+        );
+
+      textarea.value = text;
+
+      document.body.appendChild(
+        textarea
+      );
+
+      textarea.select();
+
+      document.execCommand(
+        'copy'
+      );
+
+      document.body.removeChild(
+        textarea
+      );
+
+      showMessage(
+        '予定内容をコピーしました。'
+      );
+
+    }
+
+  }
+
+
+  // -----------------------------
+  // 日付処理
+  // -----------------------------
+
+  function toCalendarText(
+    date,
+    time
+  ) {
+
+    return (
+      date.replace(/-/g, '') +
+      'T' +
+      time.replace(/:/g, '') +
+      '00'
+    );
+
+  }
+
+
+  function addMinutes(
+    date,
+    time,
+    minutes
+  ) {
+
+    const d =
+      new Date(
+        date +
+        'T' +
+        time +
+        ':00+09:00'
+      );
+
+    d.setTime(
+      d.getTime() +
+      minutes * 60 * 1000
+    );
+
+    const parts =
+      new Intl.DateTimeFormat(
+        'ja-JP',
+        {
+          timeZone:
+            'Asia/Tokyo',
+          year:
+            'numeric',
+          month:
+            '2-digit',
+          day:
+            '2-digit',
+          hour:
+            '2-digit',
+          minute:
+            '2-digit',
+          second:
+            '2-digit',
+          hour12:
+            false
+        }
+      )
+      .formatToParts(d);
+
+    const obj = {};
+
+    parts.forEach(
+      part => {
+        obj[part.type] =
+          part.value;
+      }
+    );
+
+    return (
+      obj.year +
+      obj.month +
+      obj.day +
+      'T' +
+      obj.hour +
+      obj.minute +
+      obj.second
+    );
+
+  }
+
+
+  function formatJapaneseDate(
+    date
+  ) {
+
+    const parts =
+      date.split('-');
+
+    return (
+      parts[0] +
+      '年' +
+      Number(parts[1]) +
+      '月' +
+      Number(parts[2]) +
+      '日'
+    );
+
+  }
+
+
+  // -----------------------------
+  // ICS文字エスケープ
+  // -----------------------------
+
+  function escapeIcs(text) {
+
+    return String(text)
+      .replace(/\\/g, '\\\\')
+      .replace(/\n/g, '\\n')
+      .replace(/,/g, '\\,')
+      .replace(/;/g, '\\;');
+
+  }
+
+
+  // -----------------------------
+  // メッセージ
+  // -----------------------------
+
+  function showMessage(text) {
+
+    const box =
+      document.getElementById(
+        'message'
+      );
+
+    box.textContent = text;
+
+    box.style.display =
+      'block';
+
+  }
+
+</script>
+
+</body>
+</html>
