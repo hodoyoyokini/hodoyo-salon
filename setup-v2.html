@@ -1099,106 +1099,118 @@
 
   function getAppointmentPrintCss() {
 
-    return `
-      * {
-        box-sizing: border-box;
-      }
+  return `
+    * {
+      box-sizing: border-box;
+    }
 
-      body {
-        margin: 0;
-        padding: 0;
-        font-family:
-          Arial,
-          "Hiragino Kaku Gothic ProN",
-          "Yu Gothic",
-          Meiryo,
-          sans-serif;
-        color: #253247;
-      }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 210mm;
+      min-height: 297mm;
+    }
 
-      .appointment-card {
-        width: 91mm;
-        height: 55mm;
-        padding: 6mm;
-        background: #faf8f3;
-        display: flex;
-        gap: 5mm;
-      }
+    body {
+      padding-top: 20mm;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      font-family:
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      color: #253247;
+      background: white;
+    }
 
-      .appointment-left {
-        flex: 1;
-        min-width: 0;
-      }
+    .appointment-card {
+      width: 91mm;
+      height: 55mm;
+      padding: 6mm;
+      background: #faf8f3;
+      display: flex;
+      gap: 5mm;
+      flex: none;
+    }
 
-      .appointment-brand {
-        font-size: 7pt;
-        font-weight: bold;
-        letter-spacing: 0.12em;
-        margin-bottom: 1mm;
-      }
+    .appointment-left {
+      flex: 1;
+      min-width: 0;
+    }
 
-      .appointment-store {
-        font-size: 10pt;
-        font-weight: bold;
-        margin-bottom: 4mm;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
+    .appointment-brand {
+      font-size: 7pt;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      margin-bottom: 1mm;
+    }
 
-      .appointment-label {
-        font-size: 7pt;
-        color: #667085;
-      }
+    .appointment-store {
+      font-size: 10pt;
+      font-weight: bold;
+      margin-bottom: 4mm;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-      .write-line {
-        height: 6mm;
-        margin-bottom: 2.5mm;
-        border-bottom: 0.3mm solid #9aa3af;
-      }
+    .appointment-label {
+      font-size: 7pt;
+      color: #667085;
+    }
 
-      .appointment-message {
-        color: #667085;
-        font-size: 6pt;
-      }
+    .write-line {
+      height: 6mm;
+      margin-bottom: 2.5mm;
+      border-bottom: 0.3mm solid #9aa3af;
+    }
 
-      .appointment-right {
-        width: 31mm;
-        text-align: center;
-      }
+    .appointment-message {
+      color: #667085;
+      font-size: 6pt;
+    }
 
-      .appointment-qr {
-        width: 29mm;
-        height: 29mm;
-        margin: 0 auto 1.5mm;
-        padding: 2mm;
-        background: white;
-      }
+    .appointment-right {
+      width: 31mm;
+      text-align: center;
+    }
 
-      .appointment-qr img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
+    .appointment-qr {
+      width: 29mm;
+      height: 29mm;
+      margin: 0 auto 1.5mm;
+      padding: 2mm;
+      background: white;
+    }
 
-      .appointment-guide {
-        font-size: 6pt;
-        line-height: 1.4;
-      }
+    .appointment-qr img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
 
-      .appointment-tagline {
-        margin-top: 1mm;
-        color: #8a8f98;
-        font-size: 5pt;
-      }
+    .appointment-guide {
+      font-size: 6pt;
+      line-height: 1.4;
+    }
 
-      @page {
-        size: 91mm 55mm;
-        margin: 0;
-      }
-    `;
+    .appointment-tagline {
+      margin-top: 1mm;
+      color: #8a8f98;
+      font-size: 5pt;
+    }
 
-  }
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+  `;
+
+}
 
 
   // --------------------------------
