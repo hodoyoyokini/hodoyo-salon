@@ -1011,90 +1011,102 @@
 
   function getCounterPrintCss() {
 
-    return `
-      * {
-        box-sizing: border-box;
-      }
+  return `
+    * {
+      box-sizing: border-box;
+    }
 
-      body {
-        margin: 0;
-        padding: 0;
-        font-family:
-          Arial,
-          "Hiragino Kaku Gothic ProN",
-          "Yu Gothic",
-          Meiryo,
-          sans-serif;
-        color: #253247;
-      }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 210mm;
+      min-height: 297mm;
+    }
 
-      .counter-card {
-        width: 105mm;
-        height: 148mm;
-        padding: 9mm 7mm;
-        background: #faf8f3;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-      }
+    body {
+      padding-top: 15mm;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      font-family:
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      color: #253247;
+      background: white;
+    }
 
-      .counter-brand {
-        font-size: 10pt;
-        font-weight: bold;
-        letter-spacing: 0.12em;
-        margin-bottom: 5mm;
-      }
+    .counter-card {
+      width: 105mm;
+      height: 148mm;
+      padding: 9mm 7mm;
+      background: #faf8f3;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      flex: none;
+    }
 
-      .counter-store {
-        min-height: 19mm;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 17pt;
-        font-weight: bold;
-        line-height: 1.4;
-      }
+    .counter-brand {
+      font-size: 10pt;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      margin-bottom: 5mm;
+    }
 
-      .counter-copy {
-        margin: 2mm 0 5mm;
-        font-size: 11pt;
-        line-height: 1.6;
-      }
+    .counter-store {
+      min-height: 19mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17pt;
+      font-weight: bold;
+      line-height: 1.4;
+    }
 
-      .counter-qr {
-        width: 53mm;
-        height: 53mm;
-        margin: auto;
-        padding: 3mm;
-        background: white;
-      }
+    .counter-copy {
+      margin: 2mm 0 5mm;
+      font-size: 11pt;
+      line-height: 1.6;
+    }
 
-      .counter-qr img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
+    .counter-qr {
+      width: 53mm;
+      height: 53mm;
+      margin: auto;
+      padding: 3mm;
+      background: white;
+    }
 
-      .counter-guide {
-        margin-top: 4mm;
-        font-size: 10pt;
-        line-height: 1.5;
-      }
+    .counter-qr img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
 
-      .counter-tagline {
-        margin-top: auto;
-        padding-top: 4mm;
-        color: #7a8089;
-        font-size: 8pt;
-      }
+    .counter-guide {
+      margin-top: 4mm;
+      font-size: 10pt;
+      line-height: 1.5;
+    }
 
-      @page {
-        size: 105mm 148mm;
-        margin: 0;
-      }
-    `;
+    .counter-tagline {
+      margin-top: auto;
+      padding-top: 4mm;
+      color: #7a8089;
+      font-size: 8pt;
+    }
 
-  }
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+  `;
+
+}
 
 
   function getAppointmentPrintCss() {
